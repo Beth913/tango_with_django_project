@@ -29,12 +29,12 @@ def populate():
         {'title':'Flask',
         'url':'http://flask.pocoo.org'} ]
 
-    websites = {'Python': {'pages': python_pages},
-        'Django': {'pages': django_pages},
-        'Other Frameworks': {'pages': other_pages} }
+    websites = {'Python': {'pages': python_pages, 'views': 128, 'likes': 64},
+        'Django': {'pages': django_pages, 'views': 64, 'likes': 32},
+        'Other Frameworks': {'pages': other_pages} , 'views': 32, 'likes': 16}
 
     for website, website_data in websites.items():
-        w = add_website(website)
+        w = add_website(website, website_data['views'], website_data['likes'])
         for p in website_data['pages']:
             add_page(w, p['title'], p['url'])
 
@@ -50,8 +50,8 @@ def add_page(website, title, url, views=0):
     p.save()
     return p
 
-def add_website(name):
-    w = Category.objects.get_or_create(name=name)[0]
+def add_website(name, views=0, likes=0):
+    w = Category.objects.get_or_create(name=name, views=views, likes=likes)[0]
     w.save()
     return w
 
