@@ -6,11 +6,11 @@ class Category(models.Model):
     def __string__(self):
         return self.name
     
-    class Page(models.Model):
-        category = models.ForeignKey(Category, on_delete=models.CASCADE)
-        title = models.CharField(max length=128)
-        url = models.URLField()
-        views = models.IntegerField(default=0)
+class Page(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    title = models.CharField(max_length=128)
+    url = models.URLField()
+    views = models.IntegerField(default=0)
 
-        def __string__(self):
-            return self.title
+    def __string__(self):
+        return self.title
