@@ -31,7 +31,7 @@ def populate():
 
     websites = {'Python': {'pages': python_pages, 'views': 128, 'likes': 64},
         'Django': {'pages': django_pages, 'views': 64, 'likes': 32},
-        'Other Frameworks': {'pages': other_pages} , 'views': 32, 'likes': 16}
+        'Other Frameworks': {'pages': other_pages, 'views': 32, 'likes': 16} }
 
     for website, website_data in websites.items():
         w = add_website(website, website_data['views'], website_data['likes'])
@@ -41,7 +41,6 @@ def populate():
     for w in Category.objects.all():
         for p in Page.objects.filter(category=w):
             print(f'- {w}: {p}')
-
 
 def add_page(website, title, url, views=0):
     p = Page.objects.get_or_create(category=website, title=title)[0]
