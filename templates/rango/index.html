@@ -8,7 +8,12 @@
 {% block body_block %}
     <h1>Rango says...</h1>
     <div>
-        Hey there partner! <br />
+        {% if user.is_authenticated %}
+            Howdy {{ user.username}}
+        {% else %}
+            Hey there partner!
+        {% endif %}
+        <br />
         <strong>{{ boldmessage }}</strong><br />
     </div>
 
