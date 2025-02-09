@@ -8,6 +8,7 @@ from django.urls import reverse
 from rango.forms import UserForm, UserProfileForm
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 
 #index page
 def index(request):
@@ -135,4 +136,9 @@ def user_login(request):
             return HttpResponse("Invalid login details supplied.")
     else:
         return render(request, 'rango/login.html')
+    
+#restricting access
+@login_required
+def restricted(request):
+    return HttpResponse("Since you're logged in, you can see this text!")
     
