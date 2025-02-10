@@ -19,11 +19,15 @@ def index(request):
         'categories': category_list,
         'pages': page_list
     }
+    request.session.set_test_cookie()
     return render(request, 'rango/index.html', context=context_dict)
 
 #about page
 def about(request):
     context_dict = {'message': 'YJ'}
+    if request.session.test_cookie_worked():
+        print("TEST COOKIE WORKED!")
+        request.session.delete_test_cookie()
     return render(request, 'rango/about.html', context=context_dict)
 
 #show category page
