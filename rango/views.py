@@ -9,6 +9,7 @@ from rango.forms import UserForm, UserProfileForm
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from datetime import datetime
 
 #index page
 def index(request):
@@ -20,7 +21,9 @@ def index(request):
         'pages': page_list
     }
     request.session.set_test_cookie()
-    return render(request, 'rango/index.html', context=context_dict)
+    response = render(request, 'rango/index.html', context=context_dict)
+    visitor_cookie_handler(request, response)
+    return response
 
 #about page
 def about(request):
@@ -153,3 +156,22 @@ def restricted(request):
 def user_logout(request):
     logout(request)
     return redirect(reverse('rango:index'))
+
+#cookies handling
+def visitor_cookie_handler(request, response):
+    visits = int(request.COOKIES.get('visits', '1'))
+    last_visit_cookie = request.COOKIES.get('last_visit', str(datetime.now()))
+    last_visit_time = datetime.strptime(last_visit_cookie[:-7],
+                                        '%Y-%m-%d %H:%M:%S')
+    
+    #if it's been more than a day since the last visit
+    if (datetime.now() - last_visit_time).days > 0:
+        visits = visits + 1
+        #updated the last visit cookie now
+        response.set_cookie('last_visit', str(datetime.now()))
+    else:
+        #set the last visit cookie
+        response.set_cookie('last_visit', last_visit_cookie)
+    
+    #update the visits cookie
+    response.set_cookie('visits', visits)
